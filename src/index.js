@@ -2,6 +2,8 @@ import readline from "readline/promises";
 import process from "process";
 import os from "os";
 
+import getColorizedText from "./services/cli/getColorizedText.js";
+
 // create readline
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -17,24 +19,22 @@ if (args.length > 0) {
 }
 
 // greeting
-process.stdout.write(`Welcome to the File Manager, ${username}!\n`);
+getColorizedText(`Welcome to the File Manager, ${username}!\n`, "message");
 
 // get current homeDir
 let currentDir = os.homedir();
-process.stdout.write(`You are currently in ${currentDir}\n`);
+console.log(`You are currently in ${currentDir}\n`);
 
 // events
 rl.on("line", (input) => {
   switch (input) {
     case ".exit":
       rl.close();
+    default:
+      getColorizedText("Invalid input", "error");
   }
-  console.log(`Received: ${input}`);
 });
 
 rl.on("close", () => {
-  console.log(`Thank you for using File Manager, ${username}, goodbye!`);
+  getColorizedText(`Thank you for using File Manager, ${username}, goodbye!`, "message");
 });
-
-// current path
-console.log(process.cwd());
