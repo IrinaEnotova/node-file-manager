@@ -1,5 +1,6 @@
 import getColorizedText from "../cli/getColorizedText.js";
 import path from "path";
+import process from "process";
 
 export default function changeDirectory(action, currentDir, destPath = "") {
   switch (action) {
@@ -15,7 +16,12 @@ export default function changeDirectory(action, currentDir, destPath = "") {
         getColorizedText("You should enter correct pathname", "warn");
       } else {
         try {
-          process.chdir(destPath);
+          if (!path.isAbsolute(destPath)) {
+            const correctPath = path.join(currentDir, destPath);
+            process.chdir(correctPath);
+          } else {
+            process.chdir(destPath);
+          }
         } catch (err) {
           getColorizedText("Operation failed", "error");
         }
