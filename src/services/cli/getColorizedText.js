@@ -9,5 +9,8 @@ export default function getColorizedText(text, status) {
     case "message":
       console.log("\x1b[34m%s\x1b[0m", text);
       break;
+    case "content":
+      console.log("'\x1b[32m%s\x1b[0m'", text);
+      break;
   }
 }

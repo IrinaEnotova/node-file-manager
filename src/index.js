@@ -5,8 +5,9 @@ import path from "path";
 
 import getColorizedText from "./services/cli/getColorizedText.js";
 import getCurrentDir from "./services/cli/getCurrentDir.js";
-import changeDirectory from "./services/filesOperations/changeDirectory.js";
-import getList from "./services/filesOperations/getList.js";
+import changeDirectory from "./services/nwd/changeDirectory.js";
+import getList from "./services/nwd/getList.js";
+import readFile from "./services/filesOperations/readFile.js";
 
 // create readline
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -31,7 +32,7 @@ process.chdir(currentDir);
 getCurrentDir(currentDir);
 
 // events
-rl.on("line", (input) => {
+rl.on("line", async (input) => {
   const command = input.split(" ")[0];
 
   switch (command) {
@@ -50,6 +51,12 @@ rl.on("line", (input) => {
       break;
     case "ls":
       getList(currentDir);
+      getCurrentDir(currentDir);
+      break;
+    case "cat":
+      const filePath = input.split(" ")[1];
+      await readFile(filePath, currentDir);
+      getCurrentDir(currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
