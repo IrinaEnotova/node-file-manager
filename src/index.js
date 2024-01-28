@@ -8,6 +8,7 @@ import getCurrentDir from "./services/cli/getCurrentDir.js";
 import changeDirectory from "./services/nwd/changeDirectory.js";
 import getList from "./services/nwd/getList.js";
 import readFile from "./services/filesOperations/readFile.js";
+import addFile from "./services/filesOperations/addFile.js";
 
 // create readline
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -57,6 +58,10 @@ rl.on("line", async (input) => {
       const filePath = input.split(" ")[1];
       await readFile(filePath, currentDir);
       getCurrentDir(currentDir);
+      break;
+    case "add":
+      const filename = input.split(" ")[1];
+      await addFile(filename, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
