@@ -9,6 +9,7 @@ import changeDirectory from "./services/nwd/changeDirectory.js";
 import getList from "./services/nwd/getList.js";
 import readFile from "./services/filesOperations/readFile.js";
 import addFile from "./services/filesOperations/addFile.js";
+import renameFile from "./services/filesOperations/renameFile.js";
 
 // create readline
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -62,6 +63,11 @@ rl.on("line", async (input) => {
     case "add":
       const filename = input.split(" ")[1];
       await addFile(filename, currentDir);
+      break;
+    case "rn":
+      const oldName = input.split(" ")[1];
+      const newName = input.split(" ")[2];
+      await renameFile(oldName, newName, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
