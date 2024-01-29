@@ -11,6 +11,7 @@ import readFile from "./services/filesOperations/readFile.js";
 import addFile from "./services/filesOperations/addFile.js";
 import renameFile from "./services/filesOperations/renameFile.js";
 import copyFile from "./services/filesOperations/copyFile.js";
+import moveFile from "./services/filesOperations/moveFile.js";
 
 // create readline
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -37,6 +38,8 @@ getCurrentDir(currentDir);
 // events
 rl.on("line", async (input) => {
   const command = input.split(" ")[0];
+  let srcFile;
+  let destFile;
 
   switch (command) {
     case ".exit":
@@ -71,9 +74,14 @@ rl.on("line", async (input) => {
       await renameFile(oldName, newName, currentDir);
       break;
     case "cp":
-      const srcFile = input.split(" ")[1];
-      const destFile = input.split(" ")[2];
+      srcFile = input.split(" ")[1];
+      destFile = input.split(" ")[2];
       copyFile(srcFile, destFile, currentDir);
+      break;
+    case "mv":
+      srcFile = input.split(" ")[1];
+      destFile = input.split(" ")[2];
+      moveFile(srcFile, destFile, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
