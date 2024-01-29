@@ -12,11 +12,10 @@ import addFile from "./services/filesOperations/addFile.js";
 import renameFile from "./services/filesOperations/renameFile.js";
 import copyFile from "./services/filesOperations/copyFile.js";
 import moveFile from "./services/filesOperations/moveFile.js";
+import removeFile from "./services/filesOperations/removeFile.js";
 
-// create readline
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-// username
 let username = "Stranger";
 
 const args = process.argv.slice(2);
@@ -27,19 +26,17 @@ if (args.length > 0) {
   if (usernameArg[0].split("=")[1]) username = usernameArg[0].split("=")[1];
 }
 
-// greeting
 getColorizedText(`Welcome to the File Manager, ${username}!\n`, "message");
 
-// get current homeDir
 let currentDir = os.homedir();
 process.chdir(currentDir);
 getCurrentDir(currentDir);
 
-// events
 rl.on("line", async (input) => {
   const command = input.split(" ")[0];
   let srcFile;
   let destFile;
+  let filePath;
 
   switch (command) {
     case ".exit":
@@ -60,13 +57,13 @@ rl.on("line", async (input) => {
       getCurrentDir(currentDir);
       break;
     case "cat":
-      const filePath = input.split(" ")[1];
+      filePath = input.split(" ")[1];
       await readFile(filePath, currentDir);
       getCurrentDir(currentDir);
       break;
     case "add":
-      const filename = input.split(" ")[1];
-      await addFile(filename, currentDir);
+      filePath = input.split(" ")[1];
+      await addFile(filePath, currentDir);
       break;
     case "rn":
       const oldName = input.split(" ")[1];
@@ -82,6 +79,10 @@ rl.on("line", async (input) => {
       srcFile = input.split(" ")[1];
       destFile = input.split(" ")[2];
       moveFile(srcFile, destFile, currentDir);
+      break;
+    case "rm":
+      filePath = input.split(" ")[1];
+      removeFile(filePath, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");

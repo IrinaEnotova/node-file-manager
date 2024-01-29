@@ -1,9 +1,9 @@
 import fs from "fs";
-import streamPromise from "stream/promises";
 import path from "path";
 import getColorizedText from "../cli/getColorizedText.js";
+import getCurrentDir from "../cli/getCurrentDir.js";
 
-export default async function readFile(filePath, currentDir) {
+export default async function removeFile(filePath, currentDir) {
   if (!filePath) {
     getColorizedText("You should enter correct pathname", "warn");
   } else {
@@ -15,12 +15,16 @@ export default async function readFile(filePath, currentDir) {
         fullPath = filePath;
       }
 
-      const readStream = fs.createReadStream(fullPath);
-
-      readStream.on("data", (chunk) => {
-        process.stdout.write(`${chunk}\n`);
+      fs.stat(fullPath, async (err, stats) => {
+        if (err) {
+          getColorizedText(`${filePath} doesn't exist!`, "warn");
+        }
+        if (stats) {
+          await fs.promises.rm(fullPath);
+          getColorizedText(`${filePath} was successfully deleted!`, "content");
+          getCurrentDir(currentDir);
+        }
       });
-      await streamPromise.finished(readStream);
     } catch (err) {
       getColorizedText("Operation failed", "error");
     }
