@@ -13,6 +13,7 @@ import copyFile from "./services/filesOperations/copyFile.js";
 import moveFile from "./services/filesOperations/moveFile.js";
 import removeFile from "./services/filesOperations/removeFile.js";
 import osHandler from "./services/os/osHandler.js";
+import calculateHash from "./services/hash/calculateHash.js";
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -87,6 +88,10 @@ rl.on("line", async (input) => {
     case "os":
       const flag = input.split(" ")[1];
       osHandler(flag, currentDir);
+      break;
+    case "hash":
+      filePath = input.split(" ")[1];
+      calculateHash(filePath, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
