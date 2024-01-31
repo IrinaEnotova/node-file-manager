@@ -15,6 +15,7 @@ import removeFile from "./services/filesOperations/removeFile.js";
 import osHandler from "./services/os/osHandler.js";
 import calculateHash from "./services/hash/calculateHash.js";
 import compressBrotli from "./services/zip/compressBrotli.js";
+import decompressBrotli from "./services/zip/decompressBrotli.js";
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -98,6 +99,11 @@ rl.on("line", async (input) => {
       srcFile = input.split(" ")[1];
       destFile = input.split(" ")[2];
       compressBrotli(srcFile, destFile, currentDir);
+      break;
+    case "decompress":
+      srcFile = input.split(" ")[1];
+      destFile = input.split(" ")[2];
+      decompressBrotli(srcFile, destFile, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
