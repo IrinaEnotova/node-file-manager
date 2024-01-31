@@ -1,7 +1,6 @@
 import readline from "readline/promises";
 import process from "process";
 import os from "os";
-import path from "path";
 
 import getColorizedText from "./services/cli/getColorizedText.js";
 import getCurrentDir from "./services/cli/getCurrentDir.js";
@@ -13,6 +12,7 @@ import renameFile from "./services/filesOperations/renameFile.js";
 import copyFile from "./services/filesOperations/copyFile.js";
 import moveFile from "./services/filesOperations/moveFile.js";
 import removeFile from "./services/filesOperations/removeFile.js";
+import osHandler from "./services/os/osHandler.js";
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -83,6 +83,10 @@ rl.on("line", async (input) => {
     case "rm":
       filePath = input.split(" ")[1];
       removeFile(filePath, currentDir);
+      break;
+    case "os":
+      const flag = input.split(" ")[1];
+      osHandler(flag, currentDir);
       break;
     default:
       getColorizedText("Invalid input", "error");
