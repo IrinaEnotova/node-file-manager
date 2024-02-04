@@ -18,7 +18,7 @@ export default async function readFile(filePath, currentDir) {
       const readStream = fs.createReadStream(fullPath);
 
       readStream.on("data", (chunk) => {
-        process.stdout.write(`${chunk}\n`);
+        getColorizedText(`${chunk}\n`, "content");
       });
       await streamPromise.finished(readStream);
     } catch (err) {
